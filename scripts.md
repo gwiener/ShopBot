@@ -25,7 +25,7 @@ Snippets assumed to be ran from the data folder.
     done
 
 ### Extract image-based features from a single phone page
-    sed -n 's/.*s_\([^_]\+\)_rating_s\([123]\).*/\1 \2/p' phones/${phone}.html
+    sed -n 's/.*s_\([^_]\+\)_rating_s\([123]\).*/\1: \2/p' phones/${phone}.html
 
 yields 'battery' twice, first for stand-by time and second for talk time, use awk to compensate, if needed:
 
@@ -39,10 +39,18 @@ yields 'battery' twice, first for stand-by time and second for talk time, use aw
     echo "phone, size, weight, resolution, display, camera, cpu, ram, standby_time, talk_time, data" > labels.csv
 
 ### Phone labels CSV content
-     for phone in `cat phones.txt`; do
-         echo -n $phone,;
-         echo `sed -n 's/.*s_\([^_]\+\)_rating_s\([123]\).*/\2/p' phones/${phone}.html | paste -sd "," -`;
-     done >> labels.csv
+**test convert this to JSON list of dictionaries**
+     
+     echo [ > labels.json
+     for phone in `cat phones.txt`; do 
+         echo -n "{'phone':\"$phone\","; 
+         echo -n `sed -n 's/.*s_\([a-z_]\+\)_rating_s\([123]\).*/"\1":\2/p' phones/$phone.html | \
+         awk '/battery/{c++;sub("battery", "battery"c);}1' | paste -sd "," -`; echo },; 
+     done >> labels.json
+     head -c -1 labels.json > foo # remove last comma
+     mv foo labels.json
+     echo ] >> labels.json
+     
 
 ### Phones pros-cons text file, colon-separated, first value is the phone, the rest are sentences
      for phone in `cat phones.txt`; do
