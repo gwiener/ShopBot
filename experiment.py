@@ -3,8 +3,9 @@ Experiment file
 """
 
 import json
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 class Experiment(object):
     def __init__(self):
@@ -15,6 +16,7 @@ class Experiment(object):
             "camera": 0, "cpu": 0, "ram": 0, "battery": 0, "data": 0
         }
         self.enc_labels = []
+        self.enc = DictVectorizer()
 
     def load_pros_cons(self, path):
         with open(path) as f:
@@ -36,16 +38,14 @@ class Experiment(object):
             self.labels[phone].update(new_attrs)
 
     def encode_labels(self):
-        ohe = OneHotEncoder()
-        labels = [l.values() for k, l in self.labels.items()]
-        ohe.fit(labels)
-        self.enc_labels = ohe.transform(labels)
+        self.enc.fit(self.labels.values())
+        self.enc_labels = self.enc.transform(self.labels.values())
 
     def run(self):
         self.load_pros_cons('proscons.csv')
         self.load_labels('labels.json')
         self.encode_labels()
-        print self.enc_labels.toarray()[:10, :]
+        print self.enc.inverse_transform(self.enc_labels)[:10]
 
 if __name__ == '__main__':
     Experiment().run()
