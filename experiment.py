@@ -15,7 +15,7 @@ class Experiment(object):
             "camera": 0, "cpu": 0, "ram": 0, "battery": 0, "data": 0
         }
         self.enc_labels = []
-        self.enc = DictVectorizer(sparse=False)
+        self.enc = DictVectorizer()
 
     def load_pros_cons(self, path):
         pros_cons = {}
@@ -48,14 +48,16 @@ class Experiment(object):
 
     def run(self):
         self.load('labels.json', 'proscons.csv')
-        print self.data.head()
         lab_cols = self.defaults.keys()
         lab_data = self.data[lab_cols]
         recs = lab_data.to_dict('records')
         self.enc.fit(recs)
         Y = self.enc.transform(recs)
-        Y_ = self.enc.inverse_transform(Y)
-        print Y_[:10]
+        vec = TfidfVectorizer(stop_words='english')
+        text = self.data['text']
+        vec.fit(text)
+        X = vec.transform(text)
+        print X.shape, Y.shape
 
 if __name__ == '__main__':
     Experiment().run()
