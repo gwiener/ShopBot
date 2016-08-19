@@ -6,6 +6,7 @@ import pandas as pd
 import json
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.tree import DecisionTreeRegressor
 
 
 class Experiment(object):
@@ -58,6 +59,14 @@ class Experiment(object):
         vec.fit(text)
         X = vec.transform(text)
         print X.shape, Y.shape
+        reg = DecisionTreeRegressor(max_depth=20)
+        reg.fit(X.toarray(), Y.toarray())
+        sent = "I want a thin phone"
+        x = vec.transform([sent])[0]
+        y_ = reg.predict(x)[0]
+        print y_
+        d = self.enc.inverse_transform(y_)[0]
+        print {k: '%.2f' % v for k, v in d.items()}
 
 if __name__ == '__main__':
     Experiment().run()
