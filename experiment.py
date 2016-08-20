@@ -48,7 +48,7 @@ class Experiment(object):
         self.data = df
 
     def run(self):
-        self.load('labels.json', 'proscons.csv')
+        self.load('labels.json', 'pros_cons.csv')
         lab_cols = self.defaults.keys()
         lab_data = self.data[lab_cols]
         recs = lab_data.to_dict('records')
