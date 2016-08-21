@@ -58,3 +58,8 @@ yields 'battery' twice, first for stand-by time and second for talk time, use aw
          echo `sed -n '/<div class="proscons">/,/<\/div>/p' phones/${phone}.html | \
          sed -n 's/.*<li>\([^<]*\)<.*/\1/p' | paste -sd "|" -`;
      done > proscons.csv
+
+### Extract all unique pros and cons items
+There are only about 37 of them
+
+     cat pros_cons.csv | cut -d'|' -f2- | tr "|" "\n" | sed -e 's/^[ \t]*//;s/[ \t]*$//' | sort | uniq > tagged.csv
