@@ -20,7 +20,7 @@ class TaggerTest(unittest.TestCase):
             'I want a small phone': 'size',
             "I'm concerned about water on phone": 'water'
         }
-        tagger = DocumentSimilarityTagger(tagged.keys(), tagged.values(), k=1)
+        tagger = DocumentSimilarityTagger(list(tagged.keys()), list(tagged.values()), k=1)
         query = "I want a water-resistant phone"
         tag = tagger.predict(query)
         self.assertEqual(tag, 'water')
