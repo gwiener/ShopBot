@@ -1,13 +1,23 @@
 # ShopBot
 
 ## Prerequisits
-- scikit, that requires
-- scipy, that requires
-- numpy+mkl
+The ShopBot requires Python 3.5 with the following packages installed:
+- scikit-learn
 - pandas
+- klein
+- nltk with the following resources:
+  - Porter stemmer (no download required)
+  - Punkt tokenizer models
+  - The Brown corpus (only for extracting candidate phrases)
 
-For Windows I am trying to use 
-[WinPython-3.5.1 64bit no Qt](https://sourceforge.net/projects/winpython/files/WinPython_3.5/3.5.2.1/),
-after trying to install scipy from pip failed miserably.
+For running the service, execute the following commands, if needed:
+    
+    $ pip install pip.exe install scikit-learn pandas klein nltk
+    $ python
+    >>> nltk.download('punkt')
 
-WinPython 3 also failed, reverting to WinPython-2.7.10
+For following the steps for creating a corpus to tag, add
+
+    >>> nltk.download('brown')
+    
+Alternatively, run `python install.py` for the full installation.
