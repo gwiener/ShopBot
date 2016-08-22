@@ -12,7 +12,7 @@ def load_tagged_file(path):
     :return: a pair of lists (docs, tags)
     """
     df = pd.read_csv(path, sep='|', names=['doc', 'tag'])
-    return df['doc'].str.strip(), df['tag'].str.strip()
+    return df['doc'].str.strip().tolist(), df['tag'].str.strip().tolist()
 
 
 class DocumentSimilarityTagger(object):
@@ -39,8 +39,8 @@ class DocumentSimilarityTagger(object):
         self.tags = tags
         self.k = k
         self.vec = TfidfVectorizer(stop_words='english')
-        xs = map(self.prepare, docs)
-        self.x = self.vec.fit_transform(xs)
+        self.docs = [self.prepare(doc) for doc in docs]
+        self.x = self.vec.fit_transform(self.docs)
 
     @staticmethod
     def vote(scores):
@@ -64,3 +64,16 @@ class DocumentSimilarityTagger(object):
         idx = sim.argsort()[-self.k:]
         tag_scores = [{'tag': self.tags[i], 'score': sim[i]} for i in idx]
         return self.vote(tag_scores)
+
+    def add(self, doc, tag):
+        """
+        Add a tagged sample to the corpus, re-fit the vectorizer and re-transform the data.
+        Since the corpus may be small, the added doc may be influential.
+        Therefore re-running fit_transform is required, albeit slow.
+        :param doc: Additional short text
+        :param tag: a tag for the text
+        """
+        prep_doc = self.prepare(doc)
+        self.docs.append(prep_doc)
+        self.tags.append(tag)
+        self.x = self.vec.fit_transform(self.docs)

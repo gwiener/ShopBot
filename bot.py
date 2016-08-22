@@ -22,6 +22,15 @@ class BotServer(object):
         reply = {'text': text, 'tagging': tag}
         return json.dumps(reply)
 
+    @app.route('/v1/tags', methods=['PUT'])
+    def put(self, request):
+        cont = request.content.read().decode('utf-8')
+        d = json.loads(cont)
+        doc = d['text']
+        tag = d['tag']
+        self.tagger.add(doc, tag)
+        return 'OK'
+
 
 def serve(tagger):
     bot = BotServer(tagger)

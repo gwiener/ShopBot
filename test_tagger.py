@@ -29,3 +29,14 @@ class TaggerTest(unittest.TestCase):
         docs, tags = load_tagged_file('tagged.csv')
         self.assertEqual(len(docs), len(tags))
         self.assertGreater(len(docs), 0)
+
+    def test_add(self):
+        tagged = {
+            'I want a big phone': 'size',
+            'I want a small phone': 'size',
+        }
+        tagger = DocumentSimilarityTagger(list(tagged.keys()), list(tagged.values()), k=1)
+        tagger.add("I'm concerned about water on phone", 'water')
+        query = "I want a water-resistant phone"
+        tag = tagger.predict(query)
+        self.assertEqual(tag, 'water')
