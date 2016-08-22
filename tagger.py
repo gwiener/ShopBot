@@ -39,7 +39,8 @@ class DocumentSimilarityTagger(object):
         self.tags = tags
         self.k = k
         self.vec = TfidfVectorizer(stop_words='english')
-        self.x = self.vec.fit_transform(docs)
+        xs = map(self.prepare, docs)
+        self.x = self.vec.fit_transform(xs)
 
     @staticmethod
     def vote(scores):
