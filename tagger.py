@@ -5,6 +5,16 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
+def load_tagged_file(path):
+    """
+    Load tagged docs from colon-separated text file
+    :param path: path to file
+    :return: a pair of lists (docs, tags)
+    """
+    df = pd.read_csv(path, sep='|', names=['doc', 'tag'])
+    return df['doc'].str.strip(), df['tag'].str.strip()
+
+
 class DocumentSimilarityTagger(object):
     stemmer = PorterStemmer()
 

@@ -1,5 +1,5 @@
 import unittest
-from tagger import DocumentSimilarityTagger
+from tagger import DocumentSimilarityTagger, load_tagged_file
 
 
 class TaggerTest(unittest.TestCase):
@@ -24,3 +24,8 @@ class TaggerTest(unittest.TestCase):
         query = "I want a water-resistant phone"
         tag = tagger.predict(query)
         self.assertEqual(tag, 'water')
+
+    def test_load_tagged(self):
+        docs, tags = load_tagged_file('tagged.csv')
+        self.assertEqual(len(docs), len(tags))
+        self.assertGreater(len(docs), 0)
