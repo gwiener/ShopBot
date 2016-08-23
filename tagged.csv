@@ -1,4 +1,4 @@
-# size, weight, resolution, display, pixel_density, camera, cpu, ram, battery, data, keyboard, hdmi, usb, gps, wifi, water
+# size, weight, resolution, display, pixel_density, camera, cpu, ram, battery, data, keyboard, hdmi, usb, gps, wifi, water, sim
 Big display | display
 Dual SIM card support | data
 Extremely high pixel density screen | pixel_density
@@ -35,3 +35,44 @@ Thin body, measuring less than 7.5mm/0.3inches | size
 Too little RAM memory | memory
 Very big display | display
 Water-resistant phone | water
+
+# Terms taken from most common words in phone descriptions, compared to news and romance English
+camera | camera
+display | display
+dual slot | sim
+microsd | usb
+megapixel | camera
+ram | memory
+core | cpu
+card | sim
+mp | camera
+processor | cpu
+memory | memory
+front camera | camera
+quad core | cpu
+sim | sim
+ghz | cpu
+video | camera
+rear camera | camera
+vga | display
+screen | display
+gps | gps
+wi fi | wifi
+battery | battery
+keyboard | keyboard
+resolution | resolution
+qwerty | keyboard
+cpu | cpu
+qvga | display
+rom | memory
+rear facing camera | camera
+front facing camera | camera
+3g | data
+shooter | camera
+wap | data
+selfie | camera
+wireless | wifi
+amoled | display
+wvga | display
+capture | camera
+4g | data

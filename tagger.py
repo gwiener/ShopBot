@@ -11,7 +11,7 @@ def load_tagged_file(path):
     :param path: path to file
     :return: a pair of lists (docs, tags)
     """
-    df = pd.read_csv(path, sep='|', names=['doc', 'tag'])
+    df = pd.read_csv(path, sep='|', names=['doc', 'tag'], comment='#', skip_blank_lines=True)
     return df['doc'].str.strip().tolist(), df['tag'].str.strip().tolist()
 
 

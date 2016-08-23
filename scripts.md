@@ -63,3 +63,11 @@ yields 'battery' twice, first for stand-by time and second for talk time, use aw
 There are only about 37 of them
 
      cat pros_cons.csv | cut -d'|' -f2- | tr "|" "\n" | sed -e 's/^[ \t]*//;s/[ \t]*$//' | sort | uniq > tagged.csv
+
+### Extract all descriptions from phone pages
+    
+    for phone in `cat phones.txt`; do
+        echo -n $phone"|";
+        echo `sed -n 's| *<meta name="description" content="\([^"]*\)"/>|\1|p' phones/$phone.html | \
+        sed 's/[&#][^;]*;//g'`;
+    done > desc.csv

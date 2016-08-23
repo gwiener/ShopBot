@@ -23,6 +23,6 @@ words.extend([('english', w) for w in brown.words(categories='news') if w not in
 words.extend([('english', w) for w in brown.words(categories='romance') if w not in stops])
 cfd = nltk.ConditionalFreqDist(words)
 most_common = cfd['phone'].most_common(200)
-for w in most_common:
+for w, freq in most_common:
     print(w)
 
