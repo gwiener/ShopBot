@@ -40,3 +40,11 @@ class TaggerTest(unittest.TestCase):
         query = "I want a water-resistant phone"
         tag = tagger.predict(query)
         self.assertEqual(tag, 'water')
+
+    def test_answer_correctly(self):
+        train_docs, train_tags = load_tagged_file('tagged.csv')
+        test_docs, test_tags = load_tagged_file('test.csv')
+        tagger = DocumentSimilarityTagger(train_docs, train_tags, k=3)
+        for doc, tag in zip(test_docs, test_tags):
+            prediction = tagger.predict(doc)
+            self.assertEqual((doc, prediction), (doc, tag))
