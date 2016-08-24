@@ -18,8 +18,8 @@ class BotServer(object):
     def tag(self, request):
         text = request.content.read().decode('utf-8')
         request.setHeader('Content-Type', 'application/json')
-        tag = self.tagger.predict(text)
-        reply = {'text': text, 'tagging': tag}
+        tag, proba = self.tagger.predict_proba(text)
+        reply = {'text': text, 'tagging': tag, 'probability': proba}
         return json.dumps(reply)
 
     @app.route('/v1/tags', methods=['PUT'])

@@ -25,6 +25,19 @@ class TaggerTest(unittest.TestCase):
         tag = tagger.predict(query)
         self.assertEqual(tag, 'water')
 
+    def test_simple_predict_proba(self):
+        tagged = {
+            'I want a big display': 'size',
+            'I am looking for a small phone': 'size',
+            "I'm concerned about water on phone": 'water'
+        }
+        tagger = DocumentSimilarityTagger(list(tagged.keys()), list(tagged.values()), k=3)
+        query = "I want a water-resistant phone"
+        tag, proba = tagger.predict_proba(query)
+        self.assertEqual(tag, 'water')
+        self.assertGreater(proba, 0)
+        self.assertLess(proba, 1)
+
     def test_load_tagged(self):
         docs, tags = load_tagged_file('tagged.csv')
         self.assertEqual(len(docs), len(tags))

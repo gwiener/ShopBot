@@ -52,18 +52,50 @@ class DocumentSimilarityTagger(object):
         df = pd.DataFrame(scores)
         return df.groupby('tag')['score'].sum().argmax()
 
-    def predict(self, query):
+    @staticmethod
+    def vote_proba(scores):
         """
-        Predict the tag for a query sentence using weighted k-nearest-neighbor classification
+        Given a list of scored tags, return the tag with the highest total score and its probability
+        :param scores: a list of {tag, score} dictionaries, where tag is not unique, and score is numerical
+        :return: a pair of the selected tag and the sum of its scores, normalized
+        """
+        df = pd.DataFrame(scores)
+        sums = df.groupby('tag')['score'].sum()
+        total = sum(sums)
+        tag = sums.argmax()
+        proba = sums[tag] / total
+        return tag, proba
+
+    def _score(self, query):
+        """
+        Return scoring for each tag of each one of the K most similar documents
         :param query: short text
-        :return: voted tag out of the k most similar documents from the tagged set
+        :return: a list of dictionaries {tag, score}
         """
         prep_query = self.prepare(query)
         q = self.vec.transform([prep_query])[0]
         sim = (q * self.x.T).A[0]
         idx = sim.argsort()[-self.k:]
         tag_scores = [{'tag': self.tags[i], 'score': sim[i]} for i in idx]
+        return tag_scores
+
+    def predict(self, query):
+        """
+        Predict the tag for a query sentence using weighted k-nearest-neighbor classification
+        :param query: short text
+        :return: voted tag out of the k most similar documents from the tagged set
+        """
+        tag_scores = self._score(query)
         return self.vote(tag_scores)
+
+    def predict_proba(self, query):
+        """
+        Predict the probability of a tag for a query sentence using weighted k-nearest-neighbor classification
+        :param query: short text
+        :return: voted tag out of the k most similar documents from the tagged set and its normalized probability
+        """
+        tag_scores = self._score(query)
+        return self.vote_proba(tag_scores)
 
     def add(self, doc, tag):
         """
