@@ -1,9 +1,8 @@
 """
 Main script for tagging customer queries
 """
-from sys import argv
-import fileinput
 from klein import Klein
+from argparse import ArgumentParser
 import json
 from tagger import load_tagged_file, DocumentSimilarityTagger
 
@@ -32,25 +31,20 @@ class BotServer(object):
         return 'OK'
 
 
-def serve(tagger):
+def serve(tagger, port):
     bot = BotServer(tagger)
-    bot.app.run('localhost', 8080)
+    bot.app.run('localhost', port)
 
 
-def loop(tagger):
-    print("Hello, human, how may I assist you?")
-    for query in fileinput.input(files=argv[2:]):
-        tag = tagger.predict(query)
-        print(tag)
-
-
-def main(op, path):
-    docs, tags = load_tagged_file(path)
-    tagger = DocumentSimilarityTagger(docs, tags)
-    if op.lower() == 'rest':
-        serve(tagger)
-    else:
-        loop(tagger)
+def main(args):
+    docs, tags = load_tagged_file(args.file)
+    tagger = DocumentSimilarityTagger(docs, tags, k=args.K)
+    serve(tagger, args.port)
 
 if __name__ == '__main__':
-    main(argv[1], argv[2])
+    parser = ArgumentParser()
+    parser.add_argument('--port', nargs='?', type=int, default=8080, help='REST API port')
+    parser.add_argument('--file', nargs='?', type=str, default='tagged.csv', help='Path to tagged samples file')
+    parser.add_argument('-K', nargs='?', type=int, default=3, help='Number of similar documents to consider')
+    args = parser.parse_args()
+    main(args)
