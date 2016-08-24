@@ -6,6 +6,9 @@ import nltk
 from nltk.corpus import brown
 from nltk.corpus import stopwords
 
+# Download the required corpus files, will skip download if present
+nltk.download('stopwords')
+nltk.download('brown')
 
 stops = stopwords.words("english")
 words = []
