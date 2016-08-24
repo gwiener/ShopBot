@@ -96,4 +96,9 @@ the succinct pros-and-cons list and descriptions.
 yield better accuracy and performance. However, the small data set that I had
 the time to extract and analyze was not sufficient for training large models.
 
+1. I did not not implement a tagger for the constraint attached the objective.
+A very similar approach may be used to the same end, i.e. use a tagger with
+a samples set of positive ("I want...") and negative ("I don't want...")
+short samples.
+
 
