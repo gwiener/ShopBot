@@ -24,4 +24,61 @@ The design goals and assumptions for the algorithm were:
  not to present the result to the user, and ask for input instead.
 1. Support adding tagged samples, so that users' input may be incorporated into
  the system.
+1. If possible, the set of tags should not be limited, allowing more flexible
+user input.
+
+## Obtaining data
+As the main source of data I downloaded mobile phones specs pages from 
+[Phone Arena](http://www.phonearena.com/). 
+See for example this [Samsung Galaxy Express ](http://www.phonearena.com/phones/Samsung-Galaxy-Express-3_id10039) page.
+
+After crawling and downloading 7456 phone pages, I extracted their pros and cons
+lists, appearing in the middle-left panel. These were meant to serve as a 
+representative body of text for what customers are saying about mobile phones.
+Since there where only 37 set phrases used as cons and pros, I tagged them 
+manually according to the objective appearing in the specs: size, weight, 
+resolution, pixel density, etc. The result is the [tagged samples](tagged.csv) file.
+
+## Analyzing data
+
+Since 37 phrases may be a too small corpus, I also extracted each phone description
+into a [descriptions](desc.scv) file. I then compared the descriptions vocabulary
+with baseline English, using the *Brown corpus* 
+(see [NLTK data](http://www.nltk.org/nltk_data/) item 5) and 
+Conditional Frequency Distribution analysis (see [Chapter 2 of the NLTK book](http://www.nltk.org/book/ch02.html), section 2.2).
+The [desc.py](desc.py) script includes the code for this analysis (also requiring additional downloads).
+
+The above analysis resulted in a set of 200 keywords that are more common to the domain of
+mobile phones than new or romance English. I selected the more unique ones, and appended
+them as to the tagged samples set.
+
+## Tagging customer queries
+
+To withstand the above design goals, I implemented a K-Nearest-Neighbors tagger
+where document similarity is the distance metrics, and tags from the most similar
+samples are weighted by their similarity. 
+The tagged samples are tokenized, stemmed, and transformed using TF-IDF to the
+data matrix. Queries are likewise tokenized and stemmed. The TF-IDF similarity
+score is computed for each sample, and the top K "vote" for the selected tag.
+The [tagger module](tagger.py) implements this algorithm, 
+with a similar interface to scikit-learn classifiers.
+
+The [bot module](bot.py) exposes the `predict_proba` method 
+as a REST API POST operation using [Klein](http://klein.readthedocs.io/).
+ 
+## Adding samples
+
+One advantage of KNN is that samples can be added without an expensive re-training.
+This way, when the probability of the prediction is too low, the application may
+decide to ask the user for additional input.
+The tagger `add` method takes a document and a tag and add its data set.
+Since in the current settings the number of samples may be small, each new sentence
+may affect the terms frequencies significantly. Therefore, the TF-IDF matrix is
+recalculated. This may not be necessary once the data set is large enough.
+
+The [bot module](bot.py) exposes the this method as a REST API PUT operation.
+
+## Roads not taken
+
+
 
