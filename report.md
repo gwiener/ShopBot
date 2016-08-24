@@ -16,6 +16,7 @@ beyond the scope of this project at the given time frame.
 Instead, I worked toward obtaining a samples set of manageable size, tagging it
 manually, and using it as ground truth for a machine learning algorithm. 
 The design goals and assumptions for the algorithm were:
+
 1. Work with short, natural sentences, so that minimal post-processing
  over the text is required.
 1. Match one sentence with one tag. Analyzing multiple objectives
@@ -79,6 +80,20 @@ recalculated. This may not be necessary once the data set is large enough.
 The [bot module](bot.py) exposes the this method as a REST API PUT operation.
 
 ## Roads not taken
+Due to the short time-frame, I have not followed these possible approaches:
 
+1. As mentioned before, ideally the tags where learned from the text as well,
+making manual tagging redundant. This is not impossible, since, for example,
+[Phone Arena](http://www.phonearena.com/) pages include specs for each phone.
+By comparing these specs, an algorithm may be able to determine that a phone
+is, e.g., heavier than others, and therefore its reviewers are likely to
+complain about its weight.
+
+1. I did not use the full text of phone reviewers, although it is richer than
+the succinct pros-and-cons list and descriptions.
+ 
+1. KNN is one possible algorithm. Other algorithms, e.g. Neural Networks, may
+yield better accuracy and performance. However, the small data set that I had
+the time to extract and analyze was not sufficient for training large models.
 
 
