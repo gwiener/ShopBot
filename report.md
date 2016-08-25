@@ -32,8 +32,10 @@ user input.
 As the main source of data I downloaded mobile phones specs pages from 
 [Phone Arena](http://www.phonearena.com/). 
 See for example this [Samsung Galaxy Express ](http://www.phonearena.com/phones/Samsung-Galaxy-Express-3_id10039) page.
+The [scripts file](scripts.md) lists the BASH code snippets used for fetching
+the pages and extracting data from them.
 
-After crawling and downloading 7456 phone pages, I extracted their pros and cons
+After downloading 7456 phone pages, I extracted their pros and cons
 lists, appearing in the middle-left panel. These were meant to serve as a 
 representative body of text for what customers are saying about mobile phones.
 Since there where only 37 set phrases used as cons and pros, I tagged them 
@@ -81,6 +83,10 @@ The [bot module](bot.py) exposes the this method as a REST API PUT operation.
 
 ## Roads not taken
 Due to the short time-frame, I have not followed these possible approaches:
+
+1. I did not attempt to parse or match sentences using NLP rules. Adding
+Part-of-Speech tags may have improved the algorithm, but due to time
+considerations was left out.
 
 1. As mentioned before, ideally the tags where learned from the text as well,
 making manual tagging redundant. This is not impossible, since, for example,
