@@ -52,8 +52,9 @@ Conditional Frequency Distribution analysis (see [Chapter 2 of the NLTK book](ht
 The [desc.py](desc.py) script includes the code for this analysis (also requiring additional downloads).
 
 The above analysis resulted in a set of 200 keywords that are more common to the domain of
-mobile phones than new or romance English. I selected the more unique ones, and appended
-them as to the tagged samples set.
+mobile phones than new or romance English. 
+Such words include *selfies*, *megapixels* and *qwerty* keyboards.  
+I selected the more unique ones, and appended them to the tagged samples set.
 
 ## Tagging customer queries
 
