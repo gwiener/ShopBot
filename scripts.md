@@ -1,6 +1,5 @@
 # Scripts
 Bash snippets to download data from PhoneArena and extract features.
-Snippets assumed to be ran from the data folder.
 
 ### Download PhoneArena index pages
 ```bash
